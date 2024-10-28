@@ -21,7 +21,7 @@ clients = []
 nicknames = []
 client_colors = {} #Dictionary for every users color.
 
-def broadcast(msg): #We will broadcast the message to all clients in the list clients.
+def broadcast(msg): #Broadcast the message to all clients in the clients list.
     for client in clients:
         client.send(msg)
 
@@ -30,8 +30,8 @@ def handle(client): #Handling messages from each client.
     while True:
         try:
             msg = client.recv(1024).decode('utf-8')#Receiving message from the client and decoding it.
-            index = clients.index(client) #Find the client index from clientslist.
-            nickname = nicknames[index] #Get clients nickname with the indexnumber.
+            index = clients.index(client) #Find the client index from clients list.
+            nickname = nicknames[index] #Get clients nickname with the index number.
 
             #Asign a color to the nickname for sending messages if they dont already have a color.
             if nickname not in client_colors:
@@ -40,12 +40,12 @@ def handle(client): #Handling messages from each client.
 
             color = client_colors[nickname] #Get clients color
             formatted_msg = f"{color}{nickname}: {msg}{Fore.RESET}".encode('utf-8')
-            broadcast(formatted_msg) #Sending colored message to all clients.
+            broadcast(formatted_msg) #Broadcasting colored message to all clients.
 
-        except Exception as e: #Error handling for disconnected clients or other errors.
+        except Exception as e: #Error handling related to client disconnection or other communications issues.
             print(f"Error handling client {client}: {e}")
             try:
-                #Remove the client from clientslist and close the connection.
+                #Remove the client from clients list and close the connection.
                 index = clients.index(client)
                 clients.remove(client)
                 client.close()
@@ -55,15 +55,15 @@ def handle(client): #Handling messages from each client.
                 print(f"{nickname} disconnected.")
                 nicknames.remove(nickname)
                 del client_colors[nickname] #Remove color from dictionary
-                
+
             except ValueError:
-                print("Client already removed.")
+                print("Client already removed.") #Indicates that the client was already removed from the list before attempting to remove again.
             break #Break the loop to stop the handling of a client.
 
 def receive(): #Accepts new connections from clients and starting a new thread for each client.
     while True:
         try:
-            client, addr = server.accept() #Waiting for incomming connection and accept when clients connect.
+            client, addr = server.accept() #Waiting for an incoming connection and accept when clients connect.
             print(f"Connected with {str(addr)}") #Print information to the server
 
             client.send('NICK'.encode('utf-8')) #Request the clients nickname
@@ -73,7 +73,7 @@ def receive(): #Accepts new connections from clients and starting a new thread f
             nicknames.append(nickname)
             clients.append(client)
 
-            broadcast(f"User {nickname} joined the chat!".encode('utf-8'))
+            broadcast(f"User {nickname} joined the chat!".encode('utf-8')) #Broadcast new client to all clients.
 
             print(f"User {nickname} joined the chat!") #Print to the server when a new user connects
             client.send('Connected to the server!'.encode('utf-8')) #Tell the user that his connection is sucessfull
