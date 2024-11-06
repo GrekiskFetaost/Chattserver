@@ -6,6 +6,7 @@ docker network create chat-network
 STEP 2
 docker run -d --network chat-network -p 55555:55555 --name chat-server chat-server
 
+
 STEP 3
 To start different clients please connect each chat client using a unique name.
 Example:
