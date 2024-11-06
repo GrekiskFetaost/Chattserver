@@ -8,7 +8,7 @@ init()
 COLORS = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.CYAN, Fore.YELLOW, Fore.MAGENTA]
 
 #Server IP-address and portnumber.
-host = '127.0.0.1'
+host = '0.0.0.0' #The server listens to clients in the same Docker network.
 port = 55555
 
 #Creating a socket for the server and listening on incoming connections.

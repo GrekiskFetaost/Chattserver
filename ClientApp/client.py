@@ -8,7 +8,7 @@ nickname = input("Choose a nickname: ") #Ask the client for a nickname.
 
 #Create a socket for the client and connect to the server IP and PORT.
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('127.0.0.1', 55555))
+client.connect(('chat-server', 55555)) #Uses the server's container name as the hostname.
 
 def receive(): #The function is handling incoming messages from the server.
     while True:
